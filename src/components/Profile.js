@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GenericMessage from '../components/GenericMessage.js';
 import ProjectInProfile from './ProjectInProfile.js';
+import Skill from './Skill.js';
 
 class Profile extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class Profile extends Component {
     renderProfile = () => {
         const {userInfo} = this.state.userInfo;
 
-        if (userInfo !== null) {
+        if (userInfo) {
             return (
                 <dviv>
                     <img src={userInfo.imageUrl}/>
@@ -44,14 +45,14 @@ class Profile extends Component {
                     </ul>
                 </dviv>
             )
-        }
+        } 
     }
 
 
     render() {
         return (
             <div>
-                {this.renderProfile}
+                {this.renderProfile()}
             </div>
         )
     }

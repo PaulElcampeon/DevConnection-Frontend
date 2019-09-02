@@ -1,0 +1,7 @@
+.linkLike {
+    /* width: 10px; */
+}
+
+.linkLike:hover {
+    cursor: pointer;
+}

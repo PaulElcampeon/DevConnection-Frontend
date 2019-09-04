@@ -49,7 +49,7 @@ class App extends Component {
             )
           }} />
 
-          <Route exact path='/profile' render={() => {
+          {/* <Route exact path='/profile' render={() => {
             return (
               this.state.authenticated ? (
                 <Profile />
@@ -57,14 +57,14 @@ class App extends Component {
                   <Redirect to="/" />
                 )
             )
-          }} />
+          }} /> */}
 
           <Route exact path='/profile' component={Profile} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/project/create' />
           <Route exact path='/projects' />
-          <Route exact path='/profiles' />
+          {/* <Route exact path='/profiles' /> */}
           <Route exact path='/search' />
 
           <Route render={() => {

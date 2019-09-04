@@ -1,7 +1,7 @@
 
 function GenericMessage() {
     return {
-        email: "dave@live.co.uk"
+        email: localStorage.getItem("devConEmail")
     }
   }
   

@@ -28,12 +28,17 @@ class Register extends Component {
                 'Content-Type': 'application/json',
             }
         })
-            .then((response) => {
-                console.log(response)
-                return response.json()
-            })
+            .then((response) =>  response.json())
             .then((data) => {
-                console.log(data)
+                if (data.status === 201) {
+                    console.log("Registered successfully")
+                } else if (data.status === 403) {
+                    console.log(data.message)
+                } else {
+                    console.log("An error has occured on the server")
+                }
+            }).catch((err) => {
+                console.log(err);
             });
     }
 

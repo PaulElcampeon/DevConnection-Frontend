@@ -7,33 +7,46 @@ class Login extends Component {
         this.state = {
             email: "",
             password: "",
-            redirectToRegister: false
+            redirectToRegister: false,
         }
     }
 
-    attemptlogin = () => {
+    getLoginCredentials = () => {
+        const {email, password} = this.state;
+        return {"email": email, "password":password}
+    }
+
+    attemptlogin = (e) => {
+        e.preventDefault()
         fetch('http://localhost:8080/login', {
             method: 'post',
-            body: JSON.stringify()
+            body: JSON.stringify(this.getLoginCredentials()),
+            headers:{
+                'Content-Type': 'application/json',
+            }
         })
             .then((response) => {
-                console.log(response)
-                return response.json()
+                if (response.status === 200) {
+                    console.log(response.headers.get("Authorization"))
+                    localStorage.setItem("devConToken", response.headers.get("Authorization"))
+                    localStorage.setItem("devConEmail", this.state.email)
+                    this.props.setAuthenticated();
+                    console.log("Logged in successfully")
+                } else if (response.status === 403) {
+                    console.log("Login failed")
+                } else {
+                    console.log("Error occured on the server")
+                }
             })
-            .then((data) => {
-                console.log(data)
-            });
-    }
+            .catch((err) => {
+                console.log(err)
+            })
+        }
 
     handleChange = (e) => {
         this.setState({
             [e.target.name]:e.target.value
         })
-    }
-
-    triggerAuthenticated =  (e) => {
-        e.preventDefault()
-        this.props.setAuthenticated();
     }
 
     setRedirectToRegister = () => {
@@ -56,7 +69,7 @@ class Login extends Component {
                 <form>
                     <input type="email" name="email" placeholder="Email" onChange={this.handleChange}/>
                     <input type="password" name="password" placeholder="Password" onChange={this.handleChange}/>
-                    <input type="submit" value="Login" onClick={this.triggerAuthenticated}/>
+                    <input type="submit" value="Login" onClick={this.attemptlogin}/>
                 </form>
                 <a href="#">Forgot Password?</a>
                 <button onClick={this.setRedirectToRegister}>Register</button>

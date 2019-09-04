@@ -7,17 +7,24 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userInfo: null
+            userInfo: "",
+            requestForProfile: false,
         }
     }
 
     componentDidMount() {
-        fetch('http://localhost:8081/profile-service/get', {
+        console.log("calling")
+        fetch('http://localhost:8080/profile-service/get', {
             method: 'post',
-            body: JSON.stringify(GenericMessage())
+            body: JSON.stringify({ email: "dave@live.com" }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem("devConToken")
+            }
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 this.setState({
                     userInfo: data
                 })
@@ -25,27 +32,27 @@ class Profile extends Component {
     }
 
     renderProfile = () => {
-        const {userInfo} = this.state.userInfo;
-
-        if (userInfo) {
+        console.log("yippe")
+        if (this.state.userInfo !== "") {
+            console.log("reading")
             return (
-                <dviv>
-                    <img src={userInfo.imageUrl}/>
-                    <h1>{userInfo.username}</h1>
-                    <div>Years Experience:{userInfo.yearsExperience}</div>
+                <div>
+                    <img src={this.state.userInfo.imageUrl} />
+                    <h1>{this.state.userInfo.username}</h1>
+                    <div>Years Experience:{this.state.userInfo.yearsExperience}</div>
                     <div className="description">
-                        {userInfo.description}
+                        {this.state.userInfo.description}
                     </div>
                     <ul>
-                        {userInfo.skills.map((skill) => <Skill skillName={skill} email={userInfo.email}/>)}
+                        {this.state.userInfo.skills.map((skill) => <Skill skillName={skill} email={this.state.userInfo.email} />)}
                     </ul>
 
                     <ul>
-                        {userInfo.currentProjects.map((project) => <ProjectInProfile title={project} email={userInfo.email}/>)}
+                        {this.state.userInfo.currentProjects.map((project) => <ProjectInProfile title={project} email={this.state.userInfo.email} />)}
                     </ul>
-                </dviv>
+                </div>
             )
-        } 
+        }
     }
 
 
